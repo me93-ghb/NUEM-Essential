@@ -1,0 +1,25 @@
+{
+  "format": "nuem-look",
+  "version": 1,
+  "name": "Dramatic",
+  "settings": {
+    "blurFullAngle": 40,
+    "blurStartAngle": 90,
+    "cropZoom": 3,
+    "eyeHeight": 1.2,
+    "grainyBlur": 0.9,
+    "maxBlur": 0.025,
+    "strength": 0.8,
+    "topStretch": 0.6,
+    "vignetteFullAngle": 35,
+    "vignetteIntensity": 0.95,
+    "vignetteStartAngle": 92,
+    "vignetteTopAngle": 65,
+    "vignetteTopReach": 0.35
+  },
+  "curves": {
+    "blur": [],
+    "grainy": [],
+    "vignette": []
+  }
+}
