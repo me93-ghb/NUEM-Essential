@@ -4,7 +4,9 @@
 
 # NUEM
 
+<p align="center">
 https://github.com/user-attachments/assets/52e24a28-6ab8-4f4f-a75f-1091c04c7933
+</p>
 
 A fold animation for your MacBook, inspired by the iPhone Duo. By TGTools123.
 
