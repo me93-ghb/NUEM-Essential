@@ -4,8 +4,6 @@
 
 # NUEM
 
-https://github.com/user-attachments/assets/52e24a28-6ab8-4f4f-a75f-1091c04c7933
-
 A fold animation for your MacBook, inspired by the iPhone Duo. By TGTools123.
 
 When you close the lid, the screen turns into a picture of itself that stays upright while the lid
