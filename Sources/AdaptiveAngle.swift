@@ -1,4 +1,5 @@
 // Copyright © 2026 TGTools123 (NUEM). GNU GPL v3.
+// Modified 2026-09-20: removed the unused exact-perspective mapping.
 // Adaptive angle: the fold follows the angle you actually work at instead of a fixed start angle. - Your angle: when
 // the lid stays within ±1° for `adaptiveSettle` seconds (open at least 75°), that's your viewing angle.
 
@@ -12,9 +13,6 @@ final class AdaptiveAngle {
     private var rest: CGFloat?                             // your viewing angle, once the lid has settled
     private var glide: (from: CGFloat, to: CGFloat, since: CFTimeInterval)?
     private var still: (angle: CGFloat, since: CFTimeInterval)?
-
-    /// Your viewing angle (nil until the lid first settles, or when the feature is off).
-    var viewingAngle: CGFloat? { Settings.adaptiveAngle ? (glide?.to ?? rest) : nil }
 
     /// Where the fold starts now.
     func start(at now: CFTimeInterval) -> CGFloat {
@@ -48,14 +46,6 @@ final class AdaptiveAngle {
         guard Settings.adaptiveAngle, abs(s - sRef) > 0.001 else { return angle }
         if angle >= s { return sRef + (angle - s) }
         return sRef * pow(max(0, angle) / s, s / sRef)
-    }
-
-    /// How far the lid has turned from where the fold starts, in real degrees, for an angle of the tuning (the
-    /// inverse of `reference`): the exact perspective turns the picture by just that.
-    func lidRotation(_ reference: CGFloat, at now: CFTimeInterval) -> CGFloat {
-        let s = start(at: now), sRef = Settings.startAngle
-        guard Settings.adaptiveAngle, abs(s - sRef) > 0.001, reference < sRef else { return sRef - reference }
-        return s - s * pow(max(0, reference) / sRef, sRef / s)
     }
 
     private func restAngle(at now: CFTimeInterval) -> CGFloat? {

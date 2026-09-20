@@ -1,24 +1,24 @@
 #!/bin/zsh
-# Builds "NUEM.app" into ./build — no Xcode project, only the Command Line Tools.
+# Builds "NUEM-Essential.app" into ./build — no Xcode project, only the Command Line Tools.
 #
 #   ./build.sh            build
 #   ./build.sh run        build, then launch from ./build
 #   ./build.sh install    build, copy to /Applications, then launch
 #
 # Environment:
-#   ARCHS="arm64"                 architectures to build (default "arm64 x86_64" = universal binary)
+#   ARCHS="arm64"                 architectures to build (default: this Mac; "arm64 x86_64" = universal)
 #   CODESIGN_IDENTITY="My Cert"   signing identity (default "-" = ad hoc). A stable identity keeps the
 #                                 Screen Recording permission across rebuilds.
 set -euo pipefail
 cd "${0:A:h}"
 
-NAME="NUEM"
-EXEC="NUEM"
-BUNDLE_ID="io.github.tgtools123.nuem"
+NAME="NUEM-Essential"
+EXEC="NUEM-Essential"
+BUNDLE_ID="io.github.me93-ghb.nuem-essential"
 MIN_MACOS="14.0"
 APP="build/$NAME.app"
-archs=(${=ARCHS:-arm64 x86_64})
-frameworks=(Cocoa SwiftUI Vision IOKit Metal MetalKit QuartzCore CoreImage ScreenCaptureKit ServiceManagement AVFoundation UniformTypeIdentifiers)
+archs=(${=ARCHS:-$(uname -m)})
+frameworks=(Cocoa IOKit Metal MetalKit QuartzCore CoreImage ScreenCaptureKit ServiceManagement)
 
 if ! command -v swiftc >/dev/null; then
   echo "swiftc not found. Install the Command Line Tools with: xcode-select --install" >&2
@@ -35,6 +35,7 @@ for arch in $archs; do
   swiftc -O -target "$arch-apple-macos$MIN_MACOS" $link_flags Sources/*.swift -o "build/obj/$EXEC-$arch"
 done
 lipo -create -output "$APP/Contents/MacOS/$EXEC" build/obj/$EXEC-*
+cp LICENSE NOTICE THIRD_PARTY_NOTICES.md "$APP/Contents/Resources/"
 cp Info.plist "$APP/Contents/Info.plist"
 cp -R Resources/. "$APP/Contents/Resources/"
 codesign --force --sign "${CODESIGN_IDENTITY:--}" --identifier "$BUNDLE_ID" "$APP"
